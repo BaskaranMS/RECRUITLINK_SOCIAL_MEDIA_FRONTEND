@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './sidebar.css'
-import { Users  } from '../../../dummyData'
 import Friends from '../friends/Friends'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'

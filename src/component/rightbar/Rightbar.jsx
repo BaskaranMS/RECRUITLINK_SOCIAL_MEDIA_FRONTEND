@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './rightbar.css'
-import { Users } from '../../../dummyData'
 import Online from '../online/Online'
 import axios from 'axios'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { MyContext } from '../../context/AuthContext'
-// import { AuthContext } from '../../context/AuthContext'
 
 function Rightbar({user}) {
   const [ friends, setFriends ] = useState([]);
