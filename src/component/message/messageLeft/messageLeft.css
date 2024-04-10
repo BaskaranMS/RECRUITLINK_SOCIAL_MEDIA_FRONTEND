@@ -1,0 +1,18 @@
+.messageLeftWrapper{
+    padding: 10px;
+    overflow-y: auto;
+    height: 100%;
+}
+.messageLeftWrapper input{
+    width: 100%;
+    height: 40px;
+    font-size: 25px;
+    border: none;
+    border-bottom: 1.5px solid grey;
+}
+.messageLeftWrapper input:focus{
+    outline: none;
+}
+.messageLeftWrapperBody{
+    margin-top: 10px;
+}

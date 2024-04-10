@@ -1,0 +1,32 @@
+.messageContainer{
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.messageWrapper{
+    display: flex;
+    flex-direction: column;
+}
+.messageTopbar{
+    position: sticky;
+    top: 0px;
+    background-color: aquamarine;
+    /* height: 60px; */
+    width: 100%;
+}
+.messageBody{
+    display: flex;
+    height: calc(100vh - 50px);
+}
+.messageLeft{
+    flex: 2;
+    height: 100%;
+    overflow-y: auto;
+}
+.messageCenter{
+    flex: 6;
+}
+.messageRight{
+    flex: 2;
+}

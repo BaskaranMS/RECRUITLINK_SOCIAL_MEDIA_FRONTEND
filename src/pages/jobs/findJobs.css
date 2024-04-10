@@ -1,0 +1,64 @@
+.findJobsTopbar{
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
+}
+.findJobsBody{
+    background-color: #f0f2f5;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+}
+.findJobsBodyHeader{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    row-gap: 10px;
+}
+.findJobsBodyHeader span{
+    color : #2f3338;
+}
+.findJobsBodyHeader input{
+    width: 50%;
+    height: 50px;
+    padding-left: 10px;
+    font-size: 20px;
+    border: none;
+    border-radius: 20px;
+}
+.findJobsBodyHeader input:focus{
+    outline: none;
+}
+.findJobsMain{
+    padding: 20px;
+    margin-top: 10px;
+}
+.findJobsFilter{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.findJobsFilterOption{
+    display: flex;
+    column-gap: 10px;
+}
+.findJobsFilterOption label{
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.findJobsFilterOption select{
+    width: 250px;
+    border: #1775ee;
+    background-color: #91bcf5;
+    color: black;
+    padding-left: 10px;
+}
+.findedJobsNoResult{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}

@@ -1,0 +1,19 @@
+.messageLeftBodyContainer{
+    display: flex;
+    flex-direction: column;
+}
+.messageLeftBody{
+    display: flex;
+    padding: 10px;
+    column-gap: 10px;
+    font-size: 20px;
+}
+.messageLeftBody:hover{
+    background-color: grey;
+}
+.messageLeftBody img{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
