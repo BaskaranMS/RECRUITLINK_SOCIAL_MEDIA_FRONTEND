@@ -97,10 +97,19 @@ useEffect(()=>{
     }
   });
 
-  socket.current.on('onlineUsers', (users)=>{
-    console.log('online friends...', users);
-    setOnlineFriends(users);
-  })
+
+  socket.current.on('onlineUsers', (users) => {
+
+    const mergedUsers = [...onlineFriends];
+    users.forEach((user) => {
+      if (!mergedUsers.some((existingUser) => existingUser.userId === user.userId)) {
+        mergedUsers.push(user);
+      }
+    });
+        console.log('online friends...', users);
+
+    setOnlineFriends(mergedUsers);
+  });
 
   return ()=>{
     socket.current.disconnect();

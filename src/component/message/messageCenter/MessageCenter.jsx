@@ -10,6 +10,7 @@ function MessageCenter() {
   const [ textMessage, setTesxtMessage ] = useState('');
  
   const messageRef = useRef();
+  const typeRef = useRef();
   const [ typing, setTyping ] = useState(false);
 
   useEffect(()=>{
@@ -24,16 +25,18 @@ function MessageCenter() {
       console.log(messages, 'yes')
     });
 
-    socket?.on('userTyping', (id)=>{
-      console.log('typing//',id, recipientId );
+    socket?.on('userTyping', (data)=>{
+      console.log('typing//',data, recipientId );
       console.log('rrrr', recipientId);
-      if(id === recipientId ){
+      if(data.userId === recipientId ){
         setTyping(true);
-      }
+        if(typeRef.current){
+        typeRef.current.scrollIntoView({ behavior : 'smooth'});
+      }}
     });
 
-    socket?.on('userNotTyping', (id)=>{
-      if(id === recipientId ){
+    socket?.on('userNotTyping', (data)=>{
+      if(data.userId === recipientId ){
         setTyping(false);
       }
     })
@@ -42,7 +45,7 @@ function MessageCenter() {
     return () => {
       socket?.off('newMessage');
     };
-  }, [socket]);
+  }, [socket, recipientId]);
   
 
   const handleMessageSend = async (e)=>{
@@ -137,7 +140,7 @@ function MessageCenter() {
               <img src={'/assets/noMessage.jpg'} alt="No Messages"/>
             </div>
           }
-          {typing ? 'Typing...' : '' }
+          {typing && <p ref={typeRef}>Typing...</p> }
           </div>
         </div>
         { convId && convId?.length > 0 ? 

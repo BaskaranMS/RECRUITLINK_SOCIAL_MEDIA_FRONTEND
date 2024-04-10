@@ -22,7 +22,7 @@ function MessageRight() {
         </div>
         <div className="messageRightBody">
           { friends.length > 0 ? <>
-          { friends.map((friend)=>(
+          {/* { friends.map((friend)=>(
             <li key={friend.userId} style={{ listStyle : 'none'}}>
               <div className="liDiv">
               <img src={friend.profilePic} alt="profile pic" />
@@ -30,7 +30,19 @@ function MessageRight() {
               </div>
               <h6>{friend.username}</h6>
             </li>
-          ))}
+          ))} */}
+          {/* Filter out duplicate users based on userId */}
+        {friends.reduce((uniqueUsers, currentUser) => {
+          return uniqueUsers.some(user => user.userId === currentUser.userId) ? uniqueUsers : [...uniqueUsers, currentUser];
+        }, []).map((friend)=>(
+          <li key={friend.userId} style={{ listStyle : 'none'}}>
+            <div className="liDiv">
+            <img src={friend.profilePic} alt="profile pic" />
+            <span className='messageRightOnlineBadge'></span>
+            </div>
+            <h6>{friend.username}</h6>
+          </li>
+        ))}
           </> : 'No Friends Are in Online. They are Busy...' }
         </div>
       </div>

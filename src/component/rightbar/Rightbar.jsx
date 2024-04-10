@@ -157,9 +157,15 @@ useEffect(() => {
         <img src="/assets/ad.png" alt="" className="rightbarAd" />
         <h4 className="rightbarTitle">Online Friends</h4>
         <ul className="onlineFriendList">
-          {onlineFriends.map(use=>(
+          {/* {onlineFriends.map(use=>(
             <Online key={use.id} user={use}></Online>
-          ))}
+          ))} */}
+          {/* Filter out duplicate users based on userId */}
+        {onlineFriends.reduce((uniqueUsers, currentUser) => {
+          return uniqueUsers.some(user => user.userId === currentUser.userId) ? uniqueUsers : [...uniqueUsers, currentUser];
+        }, []).map(user => (
+          <Online key={user.userId} user={user} />
+        ))}
         </ul>
       </>
     )
