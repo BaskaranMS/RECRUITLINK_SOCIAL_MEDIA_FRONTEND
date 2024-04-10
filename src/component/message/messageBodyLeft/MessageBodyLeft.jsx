@@ -24,7 +24,7 @@ function MessageBodyLeft() {
         { conversation?.map((conv)=>(
             <li key={conv._id} style={{ listStyle : 'none'}} className='messageLeftBodyList' >
         <div className="messageLeftBody">
-            <img src={conv?.profilePic ? conv.profilePic : '/public/assets/person/avatar.png'} alt="" />
+            <img src={conv?.profilePic ? conv.profilePic : '/assets/person/avatar.png'} alt="" />
             <p onClick={()=>handleChatClick(conv)}>{conv?.username}</p>
         </div>
             </li>

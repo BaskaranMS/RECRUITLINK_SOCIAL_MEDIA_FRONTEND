@@ -68,9 +68,9 @@ function MessageCenter() {
           text : textMessage,
           createdAt : Date.now()
         };
+        setMessages((prev)=>[...prev, newMessage]);
         socket?.emit('sendMessage', newMessage);
         setTesxtMessage('')
-        setMessages([...messages, newMessage]);
       }
     }catch(err){
       console.log(err);
