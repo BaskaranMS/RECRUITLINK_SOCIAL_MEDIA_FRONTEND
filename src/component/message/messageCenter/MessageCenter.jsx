@@ -117,7 +117,7 @@ function MessageCenter() {
         <div className="messageCenterBody">
           <div className="messageCenterBodyContainer">
             {
-        messages.length > 0 ? <>
+        messages?.length > 0 ? <>
             {messages?.map((message, index)=>(
               <li key={index} style={{ listStyle : 'none'}}
               className={message.senderId != currentUser._id ?
@@ -140,7 +140,7 @@ function MessageCenter() {
           {typing ? 'Typing...' : '' }
           </div>
         </div>
-        { convId.length > 0 ? 
+        { convId?.length > 0 ? 
         <div className="messageCenterInput">
           <form onSubmit={handleMessageSend}>
           <input type="text" value={textMessage} required placeholder='Type Something...' onChange={(e)=>setTesxtMessage(e.target.value)}/>
