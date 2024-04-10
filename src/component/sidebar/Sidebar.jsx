@@ -11,6 +11,7 @@ function Sidebar() {
     localStorage.removeItem('user');
     localStorage.removeItem('auth');
     localStorage.removeItem('recruitLinkUser');
+    location.reload();
     navigate('/login')
   }
 

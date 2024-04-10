@@ -49,6 +49,7 @@ function Login() {
             // const final = JSON.parse(decryptedValue.toString(CryptoJs.enc.Utf8));
             // console.log(final);
             navigate('/');
+            location.reload();
         }catch(err){
             if(err.response.data.includes('user not found!!')){
                 setIsFetching(false);
