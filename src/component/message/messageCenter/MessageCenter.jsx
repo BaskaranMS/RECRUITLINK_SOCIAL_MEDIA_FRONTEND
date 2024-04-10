@@ -128,7 +128,7 @@ function MessageCenter() {
                 }
                 >
                 <div className="messageCenterBodyMessages">
-                <img src={message.senderId != currentUser._id ? (convProfilePic ? convProfilePic : '/public/assets/person/avatar.png') : (currentUser.profilePicture ? currentUser.profilePicture : '/public/assets/person/avatar.png')} alt="" />
+                <img src={message.senderId != currentUser._id ? (convProfilePic ? convProfilePic : '/assets/person/avatar.png') : (currentUser.profilePicture ? currentUser.profilePicture : '/assets/person/avatar.png')} alt="" />
                 <p ref={messageRef}>{message.text}</p>
                 </div>
                 <b>{format(message.createdAt)}</b>
