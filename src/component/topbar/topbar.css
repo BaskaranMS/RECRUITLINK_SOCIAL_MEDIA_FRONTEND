@@ -37,6 +37,7 @@
 .searchInput{
     border: none;
     width: 70%;
+    cursor: pointer;
 }
 .searchInput:focus{
     outline: none;
@@ -81,4 +82,33 @@
     border-radius: 100%;
     object-fit: cover;
     cursor: pointer;
+}
+
+.appUsersHeader input:focus{
+    outline: none;
+}
+.appUsersBodyContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    row-gap: 10px;
+    max-height: 45vh;
+    overflow-y: scroll;
+}
+.allAppUsersContainer{
+    display: flex;
+    column-gap: 10px;
+    padding: 10px;
+    color: black;
+}
+.appUsersBodyContainer .bodyLink  img{
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.appUsersBodyContainer .bodyLink :hover{
+    cursor: pointer;
+    background-color: grey;
+    border-radius: 20px;
 }

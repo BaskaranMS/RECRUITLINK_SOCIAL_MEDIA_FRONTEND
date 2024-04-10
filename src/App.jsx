@@ -73,6 +73,7 @@ function App() {
   const [ recipientId, setRecipientId ] = useState('');
   const [ onlineFriends, setOnlineFriends ] = useState([]);
   const [ onlineFriendsData, setOnlineFriendsData ] = useState([]);
+  const [ appUsers, setAppUsers ] = useState([]);
 
   useEffect(()=>{
 
@@ -130,7 +131,22 @@ useEffect(()=>{
 if(user){
   fetchData();
 }
-},[])
+},[]);
+
+useEffect(()=>{
+
+  const fetchData = async()=>{
+    try{
+      const response = await axios.get('https://recruit-link-socket-backend.onrender.com/api/users/getAllUsers');
+      console.log('all app users...', response.data);
+      setAppUsers(response.data);
+    }catch(err){
+      console.log(err);
+    }
+  }
+  fetchData();
+},[]);
+
 useEffect(()=>{
   async function fetchData(){
     if( onlineFriends.length < 1 ){
@@ -152,7 +168,7 @@ useEffect(()=>{
   return (
     <MyContext.Provider value={{ user, setUser, isFetching, setIsFetching, conversation, setConversation,
     messages, setMessages, convId, setConvId, convProfilePic, setConvProfilePic, recipientId, setRecipientId,
-    socket : socket.current, onlineFriendsData }}>
+    socket : socket.current, onlineFriendsData, appUsers }}>
       <Router>
         <Routes>
           <Route exact path='/' element={user ? <Home></Home> : <Login></Login>}></Route>

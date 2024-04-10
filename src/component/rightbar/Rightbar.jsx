@@ -28,7 +28,7 @@ function Rightbar({user}) {
     setId(id[0]?._id)
   },[friends])
   // const { user:currentUser, dispatch } = useContext( AuthContext );
-  const { user:currentUser, onlineFriendsData, setUser } = useContext(MyContext);
+  const { user:currentUser, onlineFriendsData, setUser, setConversation } = useContext(MyContext);
 
   useEffect(()=>{
     const filteredData = onlineFriendsData.filter((friend)=>{
@@ -60,6 +60,7 @@ useEffect(() => {
       console.log(user);
       const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?username=${username}`);
       console.log(response.data);
+      setId(response.data._id)
       if (localData.following.includes(response.data._id)) {
         console.log('yes');
         setFollowed(true);
@@ -107,22 +108,27 @@ useEffect(() => {
 
   const handleMessage = async ()=>{
 
+    console.log('handle message your id', currentUser._id);
+    console.log('handle message recipient id', id);
     // const userId = currentUser._id;
 
-    // try{
-    //   console.log(id)
-    //   const res = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/conversation/newConversation/${id}`, {
-    //     userId : currentUser._id
-    //   });
-    //   console.log(res);
-    //   if(res.data.msg.includes('Conversation already Exist!!')){
-    //     // navigate('/messages')
-    //     console.log(res.data)
-    //   }
-    // }catch(err){
-    //   console.log('error message', err);
-    // }
-    navigate('/messages')
+    try{
+      console.log(id)
+      const res = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/conversation/newConversation/${id}/${currentUser._id}`,);
+      console.log(res);
+      try{
+        const res = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/conversation/${currentUser._id}`);
+        console.log('conversation fetched from the message page...', res.data);
+        setConversation(res.data);
+        navigate('/messages')
+    }catch(err){
+        console.log('Error fetching conversation from message page...', err);
+    }
+    }catch(err){
+      console.log('error message', err);
+      alert('An error Occured');
+    }
+    // navigate('/messages')
   }
 
   const handleFollow = async ()=>{
