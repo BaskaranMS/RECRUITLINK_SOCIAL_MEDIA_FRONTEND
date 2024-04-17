@@ -6,7 +6,7 @@ import axios from 'axios';
 function Share() {
 
     // const { user } = useContext(AuthContext);
-    const { user, isFetching, setIsFetching } = useContext(MyContext);
+    const { user, isFetching, setIsFetching, url } = useContext(MyContext);
 
     const desc = useRef();
     const  [ file, setFile] = useState(null);
@@ -26,7 +26,7 @@ function Share() {
         }
 
         try{
-            const response = await axios.post('https://recruit-link-socket-backend.onrender.com/api/posts/upload',  formData , {
+            const response = await axios.post(`${url}/posts/upload`,  formData , {
                 headers : {
                     'Content-Type' : 'multipart/form-data',
                 },

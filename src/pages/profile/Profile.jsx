@@ -16,7 +16,7 @@ function Profile() {
   const [ users, setUsers ] = useState({});
   const username = useParams().username;
   const [ admin , setAdmin ] = useState(false);
-  const { user } = useContext(MyContext);
+  const { user, url } = useContext(MyContext);
 
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ function Profile() {
 
   useEffect(()=>{
     const fetchUsers = async ()=>{
-        const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?username=${username}`);
+        const response = await axios.get(`${url}/users?username=${username}`);
         setUsers(response.data);
         console.log(response.data)
         if(user.username == username){

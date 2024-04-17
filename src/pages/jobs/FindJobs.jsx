@@ -16,10 +16,11 @@ function FindJobs() {
   const [ jobTypeValue, setJobTypeValue ] = useState('');
   const [ inputValue, setInputValue ] = useState('');
 
-  const { user:currentUser } = useContext(MyContext);
+  const { user:currentUser, url } = useContext(MyContext);
 
   const [ showModal, setShowModal ] = useState(false);
   const [ modalJob, setModalJob ] = useState('');
+
 
   useEffect(()=>{
     
@@ -29,7 +30,7 @@ function FindJobs() {
 
       const user = currentUser.username;
     try{
-      const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/application/alljobs/${currentUser.username}`);
+      const response = await axios.get(`${url}/application/alljobs/${currentUser.username}`);
       console.log(response);
       setUnSortedJobs(response.data);
       setFiteredJobs(response.data);

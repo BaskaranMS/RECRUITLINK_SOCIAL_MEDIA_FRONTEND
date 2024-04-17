@@ -14,7 +14,7 @@ function Post({post}) {
     const [ isLiked, setDisliked ] = useState(false);
     const [ users, setUsers ] = useState({});
     // const { user: currentUser } = useContext(AuthContext);
-    const { user:currentUser } = useContext(MyContext);
+    const { user:currentUser, url } = useContext(MyContext);
 
   const [showFullScreen, setShowFullScreen] = useState(false);
   const [ fullScreenImage, setFullScreenImage ] = useState('');
@@ -37,7 +37,7 @@ function Post({post}) {
     const likeHandler = ()=>{
         console.log(currentUser.profilePicture);
         try{
-            axios.put(`https://recruit-link-socket-backend.onrender.com/api/posts/${post._id}/like`, {
+            axios.put(`${url}/posts/${post._id}/like`, {
                 userId : currentUser._id,
                 username : currentUser.username,
                 profilePic : currentUser.profilePicture ? currentUser.profilePicture : '/assets/person/avatar.png' })
@@ -50,7 +50,7 @@ function Post({post}) {
 
     useEffect(()=>{
         const fetchUsers = async ()=>{
-            const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?userId=${post?.userId}`);
+            const response = await axios.get(`${url}/users?userId=${post?.userId}`);
             setUsers(response.data);
         };
 
@@ -73,7 +73,7 @@ function Post({post}) {
         const id = post._id;
         setIsFetching(true);
         try{
-          const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/posts/${id}/getlikes`);
+          const response = await axios.get(`${url}/posts/${id}/getlikes`);
           console.log(response.data);
           setIsFetching(false);
           setPostLikes(response.data);
@@ -95,7 +95,7 @@ function Post({post}) {
 
         try{
 
-          const response = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/posts/${shownCommentPost._id}/addcomment`, {
+          const response = await axios.post(`${url}/posts/${shownCommentPost._id}/addcomment`, {
             userId : currentUser._id,
             username : currentUser.username,
             profilePic : currentUser.profilePicture,
@@ -128,7 +128,7 @@ function Post({post}) {
         console.log(currentUser);
         try{
 
-          const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/posts/${post._id}/getallcomments`);
+          const response = await axios.get(`${url}/posts/${post._id}/getallcomments`);
           console.log(response);
           setAllFetchedComments(response.data);
           setShownCommentPost(post);

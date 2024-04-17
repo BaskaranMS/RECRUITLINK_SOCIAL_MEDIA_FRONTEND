@@ -9,12 +9,13 @@ import  axios  from 'axios'
 
 function Message() {
 
-    const { setConvId, setRecipientId, setMessages, setConversation, user:currentUser } = useContext(MyContext);
+
+    const { setConvId, setRecipientId, setMessages, setConversation, user:currentUser, url } = useContext(MyContext);
     useEffect(()=>{
 
         const fetchData = async ()=>{
             try{
-                const res = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/conversation/${currentUser._id}`);
+                const res = await axios.get(`${url}/conversation/${currentUser._id}`);
                 console.log('conversation fetched from the message page...', res.data);
                 setConversation(res.data);
             }catch(err){

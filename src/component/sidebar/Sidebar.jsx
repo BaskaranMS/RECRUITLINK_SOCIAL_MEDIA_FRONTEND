@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './sidebar.css'
 import Friends from '../friends/Friends'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { MyContext } from '../../context/AuthContext'
+
 function Sidebar() {
 
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ function Sidebar() {
 
   const [followings, setFollowings] = useState([]);
   const [followingsData, setFollowingsData] = useState([]);
+  const { url } = useContext(MyContext);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('recruitLinkUser'));
@@ -34,7 +37,7 @@ function Sidebar() {
   
       try {
         const requests = followings.map(async (userId) => {
-          const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users/fetchUser/${userId}`);
+          const response = await axios.get(`${url}/users/fetchUser/${userId}`);
           return response.data;
         });
         
@@ -63,10 +66,12 @@ function Sidebar() {
           <span className="sidebarListItemText">Chats</span>
           </li>
             </Link>
+            <Link to='/videoCall' style={{ textDecoration : 'none', color : 'inherit'}}>
           <li className="sidebarListItem">
           <i className="fa-solid fa-play" id='sidebarIcon'></i>
-          <span className="sidebarListItemText">Videos</span>
+          <span className="sidebarListItemText">Video Call</span>
           </li>
+            </Link>
           <li className="sidebarListItem">
           <i className="fa-solid fa-user-group" id='sidebarIcon'></i>
           <span className="sidebarListItemText">Groups</span>

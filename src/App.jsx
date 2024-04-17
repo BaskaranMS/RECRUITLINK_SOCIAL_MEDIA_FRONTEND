@@ -4,9 +4,9 @@ import Profile from './pages/profile/Profile'
 import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 import JobMain from './pages/jobs/JobMain'
-import { BrowserRouter as Router, Routes, Route, Navigate, json } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { MyContext } from './context/AuthContext'
-import CryptoJs from 'crypto-js'
+// import CryptoJs from 'crypto-js'
 import EditProfile from './pages/editProfile/EditProfile'
 import JobDashboard from './pages/jobs/JobDashboard'
 import ApplyJob from './pages/jobs/ApplyJob'
@@ -14,14 +14,21 @@ import FindJobs from './pages/jobs/FindJobs'
 import AppliedCandidates from './pages/jobs/AppliedCandidates'
 import SendMail from './pages/jobs/SendMail'
 import Message from './pages/message/Message'
+import VideoCall from './pages/videoCall/VideoCall'
 import axios from 'axios'
 import { io } from 'socket.io-client'
-
+import Peer from 'peerjs'
+// import { v4 as uuidV4 } from 'uuid'
 
 function App() {
 
   const secret = "i hate this fuckin world";
   const socket = useRef();
+  const [ url, setUrl ] = useState('https://recruit-link-socket-backend.onrender.com/api')
+  // const [ url, setUrl ] = useState('http://localhost:8800/api');
+  const [peerId, setPeerId] = useState('');
+  const [ peer, setPeer ] = useState(null);
+ 
 
   // const [user, setUser] = useState(() => {
   //   try {
@@ -54,9 +61,26 @@ function App() {
   });
 
   useEffect(()=>{
+
+    const peer = new Peer();
+
+    peer.on('open', (id)=>{
+      setPeerId(id);
+      console.log('peer id at app.jsx : ', id);
+    });
+
+    setPeer(peer);
+
+    return ()=>{
+      peer.destroy();
+    };
+
+  },[]);
+
+  useEffect(()=>{
     async function fetchData(){
       if(user){
-        const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?userId=${user._id}`);
+        const response = await axios.get(`${url}/users?userId=${user._id}`);
         localStorage.setItem('recruitLinkUser', JSON.stringify(response.data));
         console.log('final',response.data);
       }
@@ -74,12 +98,15 @@ function App() {
   const [ onlineFriends, setOnlineFriends ] = useState([]);
   const [ onlineFriendsData, setOnlineFriendsData ] = useState([]);
   const [ appUsers, setAppUsers ] = useState([]);
+  const [ callRecieverId, setCallRecieverId ] = useState('');
+
+  const [ calModal, setCallModal ] = useState(false);
 
   useEffect(()=>{
 
     async function fetchData(){
         try{
-            const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/conversation/${user?._id}`);
+            const response = await axios.get(`${url}/conversation/${user?._id}`);
             setConversation(response.data);
         }catch(err){
             console.log(err);
@@ -92,9 +119,11 @@ if(user){
 },[convId, user?._id]);
 
 useEffect(()=>{
-  socket.current = io('https://recruit-link-socket-server.onrender.com', {
+  // const link = 'https://recruit-link-socket-server.onrender.com'
+  socket.current = io('ws://localhost:8900', {
     query : {
-      userId : user?._id
+      userId : user?._id,
+      peerId : peerId && peerId
     }
   });
 
@@ -114,8 +143,9 @@ useEffect(()=>{
 
   return ()=>{
     socket.current.disconnect();
-  }
-},[]);
+  };
+
+},[peerId]);
 
 useEffect(()=>{
   async function fetchData(){
@@ -124,7 +154,7 @@ useEffect(()=>{
       userId : user?._id,
       username : user?.username
     }
-    const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?userId=${user._id}`);
+    const response = await axios.get(`${url}/users?userId=${user._id}`);
     setUser(response.data);
     console.log('321',response.data);
   };
@@ -137,7 +167,7 @@ useEffect(()=>{
 
   const fetchData = async()=>{
     try{
-      const response = await axios.get('https://recruit-link-socket-backend.onrender.com/api/users/getAllUsers');
+      const response = await axios.get(`${url}/users/getAllUsers`);
       console.log('all app users...', response.data);
       setAppUsers(response.data);
     }catch(err){
@@ -153,7 +183,7 @@ useEffect(()=>{
       return;
     }else{
       for(let i = 0; i < onlineFriends.length ; i++){
-        const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users/fetchUser/${onlineFriends[i].userId}`);
+        const response = await axios.get(`${url}/users/fetchUser/${onlineFriends[i].userId}`);
         console.log('for loop fetched..',response.data);
         setOnlineFriendsData((prevData)=> [...prevData, response.data]);
       }
@@ -163,12 +193,12 @@ useEffect(()=>{
   if(user){
     fetchData();
   }
-},[onlineFriends])
+},[onlineFriends]);
 
   return (
-    <MyContext.Provider value={{ user, setUser, isFetching, setIsFetching, conversation, setConversation,
+    <MyContext.Provider value={{ peer, peerId, user, setUser, isFetching, setIsFetching, conversation, setConversation,
     messages, setMessages, convId, setConvId, convProfilePic, setConvProfilePic, recipientId, setRecipientId,
-    socket : socket.current, onlineFriendsData, appUsers }}>
+    socket : socket.current, onlineFriendsData, appUsers, callRecieverId, setCallRecieverId, url }}>
       <Router>
         <Routes>
           <Route exact path='/' element={user ? <Home></Home> : <Login></Login>}></Route>
@@ -183,8 +213,10 @@ useEffect(()=>{
           <Route exact path='/appliedcandidate/sendmail' element={<SendMail></SendMail>}></Route>
           <Route exact path='/jobDashboard/appliedcandidates/:jobId' element={<AppliedCandidates/>}></Route>
           <Route exact path='/profile/:user/editProfile' element={user ? <EditProfile></EditProfile> : <Login></Login>}></Route>
+          <Route exact path='/videoCall' element={<VideoCall></VideoCall>}></Route>
         </Routes>
       </Router>
+
     </MyContext.Provider>
 
   )

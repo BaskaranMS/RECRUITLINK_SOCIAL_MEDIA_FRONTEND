@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 
 function ApplyJob() {
 
-    const { user:currentUser } = useContext(MyContext);
+    const { user:currentUser, url } = useContext(MyContext);
     const [ jobDetails, setJobDetails ] = useState(null);
 
     const [email, setEmail] = useState(()=>{
@@ -66,7 +66,7 @@ function ApplyJob() {
         formData.append('recruiterUsername', currentUser.username)
 
         try {
-            const response = await axios.post('https://recruit-link-socket-backend.onrender.com/api/job/jobapply', formData);
+            const response = await axios.post(`${url}/job/jobapply`, formData);
             console.log(response);
             if (response.data.includes('job applied successfully!!')) {
                 console.log('Email sent successfully!');

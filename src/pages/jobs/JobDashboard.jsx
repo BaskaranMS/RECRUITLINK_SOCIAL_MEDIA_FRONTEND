@@ -9,7 +9,7 @@ import { format } from 'timeago.js'
 
 function JobDashboard() {
 
-    const { user: currentUser } = useContext(MyContext);
+    const { user: currentUser, url } = useContext(MyContext);
     const [unSortedJobs, setUnSortedJobs] = useState([]);
     const [filteredJobs, setFilteredJobs] = useState([]);
 
@@ -51,7 +51,7 @@ function JobDashboard() {
         async function fetchData() {
 
             try {
-                const response = await axios.get('https://recruit-link-socket-backend.onrender.com/api/application/alljobs/dashboard', );
+                const response = await axios.get(`${url}/application/alljobs/dashboard`, );
                 console.log(response);
                 setUnSortedJobs(response.data);
             } catch (err) {

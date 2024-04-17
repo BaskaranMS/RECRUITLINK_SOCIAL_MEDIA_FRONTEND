@@ -6,7 +6,7 @@ import './jobMain.css';
 
 function JobMain(){
 
-  const { user:currentUser } = useContext(MyContext);
+  const { user:currentUser, url } = useContext(MyContext);
 
   const [jobTitle, setJobTitle] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -28,6 +28,7 @@ function JobMain(){
 
   const [ isFetching, setIsFetching ] = useState(false);
   const [ showModal, setShowModal ] = useState(false);
+
 
   const handleJobTitleChange = (e) => {
     setJobTitle(e.target.value);
@@ -81,7 +82,7 @@ function JobMain(){
     }
     try{
 
-      const response = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/application/jobs/createnew`, details);
+      const response = await axios.post(`${url}/application/jobs/createnew`, details);
       console.log(response);
       setIsFetching(false);
       setShowModal(true);

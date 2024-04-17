@@ -11,14 +11,14 @@ import { MyContext } from '../../context/AuthContext'
 function Feed({home, username, admin}) {
   const [ posts , setPosts ] = useState([]);
   // const { user } = useContext(AuthContext);
-  const { user } = useContext(MyContext);
-  
+  const { user, url } = useContext(MyContext);
+
   useEffect(()=>{
     const fetchPosts = async () =>{
       const response = username ? 
-      await axios.get(`https://recruit-link-socket-backend.onrender.com/api/posts/profile/${username}`)
+      await axios.get(`${url}/posts/profile/${username}`)
       : 
-      await axios.get(`https://recruit-link-socket-backend.onrender.com/api/posts/timeline/${user._id}`);
+      await axios.get(`${url}/posts/timeline/${user._id}`);
       const sorted = response.data.sort((p1, p2)=>{
         return new Date(p2.createdAt) - new Date(p1.createdAt);
       })

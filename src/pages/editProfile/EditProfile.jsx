@@ -13,7 +13,7 @@ const EditProfile = () => {
   const [profilePreview, setProfilePreview] = useState(null); // State to store profile image preview URL
   const [coverPreview, setCoverPreview] = useState(null); // State to store cover image preview URL
 
-  const { user, setUser } = useContext(MyContext);
+  const { user, setUser, url } = useContext(MyContext);
   const navigate = useNavigate();
 
   const secret = "i hate this fuckin world";
@@ -30,6 +30,7 @@ const EditProfile = () => {
     setCoverPreview(URL.createObjectURL(file)); // Create a preview URL for the selected cover image
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -38,7 +39,7 @@ const EditProfile = () => {
     formData.append('coverPic', coverPic);
 
     try {
-      const response = await axios.post('https://recruit-link-socket-backend.onrender.com/api/user/profile/edit', formData, {
+      const response = await axios.post(`${url}/user/profile/edit`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization' : `Bearer ${localStorage.getItem('auth')}`

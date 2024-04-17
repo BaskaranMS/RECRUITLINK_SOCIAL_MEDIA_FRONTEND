@@ -13,10 +13,10 @@ function Login() {
     const password = useRef();
     const navigate = useNavigate();
 
-    const { user, setUser, isFetching, setIsFetching } = useContext(MyContext);
+    const { user, setUser, isFetching, setIsFetching, url } = useContext(MyContext);
 
     const secret = "i hate this fuckin world";
-    
+
     //errors
     const [ emailError, setEmailError ] = useState(null);
     const [ passwordError, setPasswordError ] = useState(null);
@@ -31,13 +31,13 @@ function Login() {
         const passwordValue = password.current.value;
         
         try{
-            const res = await axios.post('https://recruit-link-socket-backend.onrender.com/api/auth/login', {
+            const res = await axios.post(`${url}/auth/login`, {
                 email : emailValue,
                 password : passwordValue
             });
             setIsFetching(false);
             console.log(res.data);
-            const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?userId=${res.data.user._id}`);
+            const response = await axios.get(`${url}/users?userId=${res.data.user._id}`);
             const userData = response.data;
             setUser(res.data.user);
             setUser(response.data.user);

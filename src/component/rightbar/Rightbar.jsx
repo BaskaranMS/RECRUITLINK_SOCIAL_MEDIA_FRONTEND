@@ -28,7 +28,7 @@ function Rightbar({user}) {
     setId(id[0]?._id)
   },[friends])
   // const { user:currentUser, dispatch } = useContext( AuthContext );
-  const { user:currentUser, onlineFriendsData, setUser, setConversation } = useContext(MyContext);
+  const { user:currentUser, onlineFriendsData, setUser, setConversation, url } = useContext(MyContext);
 
   useEffect(()=>{
     const filteredData = onlineFriendsData.filter((friend)=>{
@@ -58,7 +58,7 @@ useEffect(() => {
     if (user) {
       const localData = JSON.parse(localStorage.getItem('recruitLinkUser'));
       console.log(user);
-      const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users?username=${username}`);
+      const response = await axios.get(`${url}/users?username=${username}`);
       console.log(response.data);
       setId(response.data._id)
       if (localData.following.includes(response.data._id)) {
@@ -89,7 +89,7 @@ useEffect(() => {
     useEffect(()=>{
       const fetch = async ()=>{
         try{
-          const res = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/users/friends/${currentUser._id}`);
+          const res = await axios.get(`${url}/users/friends/${currentUser._id}`);
           console.log('friends...',res.data)
           setFriends(res.data);
         }catch(err){
@@ -114,10 +114,10 @@ useEffect(() => {
 
     try{
       console.log(id)
-      const res = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/conversation/newConversation/${id}/${currentUser._id}`,);
+      const res = await axios.post(`${url}/conversation/newConversation/${id}/${currentUser._id}`,);
       console.log(res);
       try{
-        const res = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/conversation/${currentUser._id}`);
+        const res = await axios.get(`${url}/conversation/${currentUser._id}`);
         console.log('conversation fetched from the message page...', res.data);
         setConversation(res.data);
         navigate('/messages')
@@ -134,13 +134,13 @@ useEffect(() => {
   const handleFollow = async ()=>{
     try{
       if(followed){
-        const response = await axios.put(`https://recruit-link-socket-backend.onrender.com/api/users/${user._id}/unfollow`, { userId : currentUser._id});
+        const response = await axios.put(`${url}/users/${user._id}/unfollow`, { userId : currentUser._id});
         console.log(response.data, 'followed');
         setUser(response.data);
         localStorage.setItem('recruitLinkUser', JSON.stringify(response.data));
         // dispatch({ type : "UNFOLLOW", payload : user._id})
       }else{
-        const response = await axios.put(`https://recruit-link-socket-backend.onrender.com/api/users/${user._id}/follow`, { userId : currentUser._id});
+        const response = await axios.put(`${url}/users/${user._id}/follow`, { userId : currentUser._id});
         console.log(response.data);
          setUser(response.data);
         localStorage.setItem('recruitLinkUser', JSON.stringify(response.data));

@@ -10,7 +10,7 @@ function AppliedCandidates() {
 const { jobId } = useParams();
 const navigate = useNavigate();
 
-const { user } = useContext(MyContext);
+const { user, url } = useContext(MyContext);
 const [ emails, setEmails ] = useState([]);
 
 const [ applied, setApplied ] = useState(false);
@@ -18,12 +18,13 @@ const [ sended, setSended ] = useState(false);
 const [ recieved, setRecieved ] = useState(false);
 const [ initial, setInitial ] = useState(true);
 
+
     useEffect(()=>{
         console.log(jobId);
 
         async function fetchData(){
             try{
-                const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/application/appliedcandidates/${jobId}`);
+                const response = await axios.get(`${url}/application/appliedcandidates/${jobId}`);
                 console.log(response);
                 setEmails(response.data);
             }catch(err){
@@ -47,7 +48,7 @@ const [ initial, setInitial ] = useState(true);
                 setSended(!sended);
         try{
 
-            const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/application/appliedcandidates/sendedmails/${user.email}`);
+            const response = await axios.get(`${url}/application/appliedcandidates/sendedmails/${user.email}`);
             setEmails(response.data);
         }catch(err){
             console.log(err);
@@ -61,7 +62,7 @@ const [ initial, setInitial ] = useState(true);
 setApplied(!applied);
         try{
 
-            const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/application/appliedcandidates/${jobId}`);
+            const response = await axios.get(`${url}/application/appliedcandidates/${jobId}`);
             setEmails(response.data);
         }catch(err){
             console.log(err);
@@ -75,7 +76,7 @@ setApplied(!applied);
 setRecieved(!recieved);
         try{
 
-            const response = await axios.get(`https://recruit-link-socket-backend.onrender.com/api/application/appliedcandidates/recievedmails/${user.email}`);
+            const response = await axios.get(`${url}/application/appliedcandidates/recievedmails/${user.email}`);
             setEmails(response.data);
         }catch(err){
             console.log(err);

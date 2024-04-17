@@ -18,7 +18,7 @@ function SendMail() {
     const [subject, setSubject] = useState('Response to the Job Application Regards');
     const [body, setBody] = useState('');
 
-    const { user:currentUser } = useContext(MyContext);
+    const { user:currentUser, url } = useContext(MyContext);
 
     const [ showModal, setShowModal ] = useState(false);
     const [ isFetching, setIsFetching ] = useState(false);
@@ -29,7 +29,7 @@ function SendMail() {
         setIsFetching(true);
 
         try {
-            const response = await axios.post('https://recruit-link-socket-backend.onrender.com/api/application/appliedcandidate/sendmail', {
+            const response = await axios.post(`${url}/application/appliedcandidate/sendmail`, {
                 userId : currentUser._id,
                 email : currentUser.email,
                 applicantUserId : details.applicantId,

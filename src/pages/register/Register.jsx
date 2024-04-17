@@ -17,7 +17,8 @@ function Register() {
 
     const navigate = useNavigate();
 
-    const { user, setUser } = useContext(MyContext);
+
+    const { user, setUser, url } = useContext(MyContext);
 
     const [otpSent, setOtpSent] = useState(false);
     const [isfetching, setIsfetching] = useState(false);
@@ -77,7 +78,7 @@ function Register() {
                 token : localStorage.getItem('signup')
             };
             try {
-                const res = await axios.post('https://recruit-link-socket-backend.onrender.com/api/auth/register', user);
+                const res = await axios.post(`${url}/auth/register`, user);
                 console.log(res.data);
                 setIsfetching(false);
                 setModalDisplay(true);
@@ -100,7 +101,7 @@ function Register() {
         }
         setIsfetching(true);
         try {
-            const res = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/email/sendotp/${email.current.value}`);
+            const res = await axios.post(`${url}/email/sendotp/${email.current.value}`);
             console.log(res);
             localStorage.setItem('signup', res.data.token);
             setIsfetching(false);
@@ -131,7 +132,7 @@ function Register() {
             return;
         }
         try{
-            const res = await axios.post('https://recruit-link-socket-backend.onrender.com/api/email/verifyotp', {
+            const res = await axios.post(`${url}/email/verifyotp`, {
                 value : otpValue,
                 token : localStorage.getItem('signup')
             })

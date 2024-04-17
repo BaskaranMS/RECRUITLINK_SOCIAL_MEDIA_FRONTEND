@@ -3,15 +3,18 @@ import './messageCenter.css'
 import { MyContext } from '../../../context/AuthContext';
 import { format } from 'timeago.js'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 function MessageCenter() {
 
-  const { user : currentUser, messages,setMessages, conversation,convId ,convProfilePic, recipientId, socket } = useContext(MyContext);
+  const { url, user : currentUser, messages,setMessages, conversation,convId ,convProfilePic, recipientId, socket, setCallRecieverId } = useContext(MyContext);
   const [ textMessage, setTesxtMessage ] = useState('');
  
   const messageRef = useRef();
   const typeRef = useRef();
   const [ typing, setTyping ] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(()=>{
    console.log(convId, recipientId, messages);
@@ -56,7 +59,7 @@ function MessageCenter() {
     console.log(textMessage);
 
     try{
-      const response = await axios.post(`https://recruit-link-socket-backend.onrender.com/api/conversation/message/${convId}`, {
+      const response = await axios.post(`${url}/conversation/message/${convId}`, {
         senderId : currentUser._id,
         recieverId : recipientId,
         text : textMessage
@@ -112,7 +115,7 @@ function MessageCenter() {
       }
     socket?.emit('notTyping', details);
     }
-  },[textMessage])
+  },[textMessage]);
 
   return (
     <div className="messageCenterContainer">
